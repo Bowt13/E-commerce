@@ -39,19 +39,28 @@ app.get('/products', (req, res) => {
   attributes: ['id', 'name', 'price']
 })
   .then(result => {
-    // do something with result
+    res.json(result)
   })
   .catch(err => {
-    // there was an error, return some HTTP error code
+    console.error(err)
+    res.status(500)
+    res.json({ message: 'Oops! There was an error getting the products. Please try again' })
   })
 })
 
 app.get('/products/:id', (req, res) => {
-  Product.findById(..)
+  Product.findById(req.params.id)
   .then(result => {
-    // do something with result
+    if (result) {
+      res.json(result)
+    } else {
+        res.status(404)
+        res.json({ message: 'Product not found!' })
+      }
   })
   .catch(err => {
-    // there was an error, return some HTTP error code
+    console.error(err)
+    res.status(500)
+    res.json({ message: 'Oops! There was an error getting the products. Please try again' })
   })
 })
